@@ -1,0 +1,31 @@
+{
+  "name": "keasy9/laravel-localize",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "keasy9",
+      "email": "keasy9@gmail.com",
+      "homepage": "https://github.com/keasy9"
+    }
+  ],
+  "require": {
+    "php": "^8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Keasy9\\Localize\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Keasy9\\Localize\\Providers\\LocalizeServiceProvider"
+      ],
+      "aliases": {
+        "Localize": "Keasy9\\Localize\\Facades\\Localize"
+      }
+    }
+  }
+}
