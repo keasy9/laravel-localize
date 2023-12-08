@@ -1,6 +1,6 @@
 {
   "name": "keasy9/laravel-localize",
-  "description": "A small Laravel package that makes it easy to use the URL prefix for localization.",
+  "description": "A small Laravel package that helps with site localization.",
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
