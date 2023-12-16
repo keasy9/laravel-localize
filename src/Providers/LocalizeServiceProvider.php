@@ -19,6 +19,7 @@ class LocalizeServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'localize');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'localize');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->publishes([
             __DIR__ . '/../config/localize.php' => config_path('localize.php'),

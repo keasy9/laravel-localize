@@ -3,25 +3,27 @@
     <ul class="flex gap-2 grow justify-around">
         @if ($paginator->onFirstPage())
             <li>&lsaquo;</li>
+            <li>1</li>
         @else
             <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->previousPageUrl() }}&perPage={{ request('perPage', 25) }}">&lsaquo;</a></li>
+            <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->url(1) }}&perPage={{ request('perPage', 25) }}">1</a></li>
+            @if ($paginator->currentPage() !== $paginator->lastPage())
+                @if ($paginator->currentPage() !== 2)
+                    <li>...</li>
+                @endif
+
+                <li>{{ $paginator->currentPage() }}</li>
+            @endif
         @endif
 
-        @foreach ($elements as $element)
-            @if (is_string($element))
-                <li>{{ $element }}</li>
+        @if ($paginator->lastPage() !== 1)
+            @if ($paginator->currentPage() !== $paginator->lastPage() - 1)
+                <li>...</li>
             @endif
 
-            @if (is_array($element))
-                @foreach ($element as $page => $url)
-                    @if ($page == $paginator->currentPage())
-                        <li>{{ $page }}</li>
-                    @else
-                        <li class="cursor-pointer text-sky-600"><a href="{{ $url }}&perPage={{ request('perPage', 25) }}">{{ $page }}</a></li>
-                    @endif
-                @endforeach
-            @endif
-        @endforeach
+            <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->url($paginator->lastPage()) }}&perPage={{ request('perPage', 25) }}">{{ $paginator->lastPage() }}</a></li>
+
+        @endif
 
         @if ($paginator->hasMorePages())
             <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->nextPageUrl() }}&perPage={{ request('perPage', 25) }}">&rsaquo;</a></li>

@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="flex flex-wrap justify-between items-center gap-2 border-b-4 border-sky-600">
-        <p>{{ __('localize::messages.file') }}: {{ lang_path($file->basename) }}</p>
-        <p>{{ __('localize::messages.lang') }}: {{ __(\Keasy9\Localize\Facades\Localize::getLangName($file->filename)) }}</p>
+        <p>{{ __('localize::messages.file') }}: {{ lang_path($file['filename']) }}</p>
+        <p>{{ __('localize::messages.lang') }}: {{ mb_convert_case(__('localize::messages.' . \Keasy9\Localize\Facades\Localize::getLangName($file['basename'])), MB_CASE_TITLE) }}</p>
     </div>
     @push('toolbar')
         <div class="border border-slate-300 p-4 flex flex-wrap bg-gray-100 justify-grow gap-2">
-            {{ $strings->links('localize::pagination') }}
+            {{ $file['content']->onEachSide(0)->links('localize::pagination') }}
             <div class="flex justify-grow grow">
                 <a href="{{ url()->current() }}?perPage={{ request('perPage', 25) }}">
                     <input type="button" value="{{ __('localize::messages.reset') }}" class="border border-slate-300 px-1">
@@ -27,8 +27,8 @@
     @endpush
     @stack('toolbar')
     <div>
-        @foreach($strings as $key => $value)
-            <form action="{{ route('localize.file.saveString', $file->basename) }}" data-is-new="0" method="post" class="flex flex-wrap odd:bg-slate-100 p-4 gap-2 md:flex-nowrap items-center fileString">
+        @foreach($file['content'] as $key => $value)
+            <form action="{{ route('localize.file.strings.save', $file['basename']) }}" data-is-new="0" method="post" class="flex flex-wrap odd:bg-slate-100 p-4 gap-2 md:flex-nowrap items-center fileString">
                 @csrf
                 <textarea placeholder="{{ __('localize::messages.empty') }}" name="key" class="border border-slate-300 w-full disabled:text-center disabled:bg-inherit disabled:border-none resize-none p-1" disabled>{{ $key }}</textarea>
                 <div class="w-full text-center md:w-fit">
@@ -57,7 +57,7 @@
                             <circle cx="12" cy="12" r="9" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></circle>
                         </svg>
                     </span>
-                    <a title="{{ __('localize::messages.delete') }}" href="{{ route('localize.file.deleteString', [$file->basename, $key]) }}" class="cursor-pointer">
+                    <a title="{{ __('localize::messages.delete') }}" href="{{ route('localize.file.strings.destroy', [$file['basename'], $key]) }}" class="cursor-pointer">
                         <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-10">
                             <path d="M5,8H18a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H5a0,0,0,0,1,0,0V8A0,0,0,0,1,5,8Z" transform="translate(26 2) rotate(90)" style="fill: SteelBlue; stroke-width: 2;"></path>
                             <path d="M16,7V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V7" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
@@ -79,7 +79,7 @@
                 <p class="text-justify">{{ __('localize::messages.autofill_confirmation') }}</p>
             </div>
             <div class="flex justify-center gap-2 grow">
-                <a href="{{ route('localize.file.autofill', $file->basename) }}">
+                <a href="{{ route('localize.file.autofill', $file['basename']) }}">
                     <button class="border border-slate-300 bg-gray-100 p-1">{{ __('localize::messages.continue') }}</button>
                 </a>
                 <button class="border border-slate-300 bg-gray-100 p-1">{{ __('localize::messages.cancel') }}</button>

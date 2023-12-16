@@ -10,6 +10,7 @@ class Localize
     {
         $prefix = request()->segment(1, '');
         if (!in_array($prefix, array_keys(Config::get('localize.available_locales', [])))) {
+            app()->setLocale(config('localize.default_locale'));
             return '';
         }
 
@@ -17,7 +18,7 @@ class Localize
         return $prefix;
     }
 
-    public function getLangName(?string $locale): string
+    public function getLangName(?string $locale): string|null
     {
         $locale ??= app()->getLocale();
         return Config::get("localize.available_locales.{$locale}");

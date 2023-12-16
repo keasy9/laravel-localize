@@ -9,11 +9,8 @@
         <link rel="stylesheet" href="{{ asset("/vendor/localize/css/index.min.css") }}">
     </head>
     <body class="pt-14">
-        <header class="bg-sky-600 text-white flex p-4 justify-between fixed w-full top-0">
-            <b>{{ __('localize::messages.site_localization') }}</b>
-            <div>
-                <a href="{{ route('localize.files') }}" class="underline underline-offset-8 hover:underline-offset-1 font-bold transition-all">{{ __('localize::messages.files') }}</a>
-            </div>
+        <header class="bg-sky-600 text-white p-4 fixed w-full top-0 z-10">
+            <b><a href="{{ route('localize.locales') }}">{{ __('localize::messages.site_localization') }}</a></b>
         </header>
         <section class="center p-4 space-y-4 lg:w-3/5 mx-auto">
             @if(session()->has('imported'))
