@@ -78,6 +78,15 @@ class FileStringController extends Controller
             $keys = array_merge($keys, $matches[1]);
         }
 
+        $keys = array_filter($keys, function ($key) use ($locale) {
+            try {
+                $url = route('localize.file.strings.destroy', [$locale, $key]);
+            } catch (\Exception $e) {
+                return false;
+            }
+            return true;
+        });
+
         $filename = lang_path("{$locale}.json");
         $fileContent = File::json($filename);
         $fileContent = collect(array_fill_keys($keys, ''))->merge($fileContent);
