@@ -39,13 +39,22 @@ class LocaleController extends Controller
                 $t_locale = $translations[$locale]->groupBy('model_type');
 
                 foreach (config('localize.translated_models', []) as $model) {
-                    $t = $t_locale[$model]->groupBy('model_id');
-                    $translatedFieldsCount = count($model::$translated);
-                    $lang['models'][$model] = [
-                        'count' => $model::count(),
-                        'fullyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() == $translatedFieldsCount; })->count(),
-                        'partiallyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() < $translatedFieldsCount; })->count(),
-                    ];
+                    if (isset($t_locale[$model])) {
+                        $t = $t_locale[$model]->groupBy('model_id');
+                        $translatedFieldsCount = count($model::$translated);
+                        $lang['models'][$model] = [
+                            'count' => $model::count(),
+                            'fullyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() == $translatedFieldsCount; })->count(),
+                            'partiallyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() < $translatedFieldsCount; })->count(),
+                        ];
+
+                    } else {
+                        $lang['models'][$model] = [
+                            'count' => $model::count(),
+                            'fullyTranslated' => 0,
+                            'partiallyTranslated' => 0,
+                        ];
+                    }
                 }
             } else {
                 foreach (config('localize.translated_models', []) as $model) {
