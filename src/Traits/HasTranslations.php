@@ -43,4 +43,13 @@ trait HasTranslations
 
         return $this->getAttribute($attribute);
     }
+
+    public function translate(string $locale = null): self
+    {
+        foreach (self::$translated as $translated) {
+           $this->$translated = $this->getTranslatedAttribute($translated, $locale);
+        }
+
+        return $this;
+    }
 }
