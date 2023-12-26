@@ -74,6 +74,21 @@ so when you try to get a model attribute you will get a translated version of it
 
     {{ $post->title }} {{-- will returns title translated to current app locale --}}
 
+Also you can translate all attributes:
+
+    $post->translate();
+
+but be carefully. If you save translated model, fields in your database will be translated:
+
+    use App/Models/Post;
+
+    $post->translate()->save();
+    dd(Post->find($post->id)->title); //will dump translated title
+
+Translate all attributes for all models in collection:
+
+    $posts->translate();
+
 #### Web-interface for editing lang/**.json files and localize models:
 
 This package also provides a simple web interface  at http(s)://yourSiteRoot/localize/. But if you need to change this URI, you can do it through the configuration in config/localize.php:

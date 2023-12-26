@@ -4,6 +4,7 @@ namespace Keasy9\Localize\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Keasy9\Localize\Models\Translation;
+use Keasy9\Localize\Support\TranslatableCollection;
 
 trait HasTranslations
 {
@@ -51,5 +52,10 @@ trait HasTranslations
         }
 
         return $this;
+    }
+
+    public function newCollection(array $models = []): TranslatableCollection
+    {
+        return new TranslatableCollection($models);
     }
 }
