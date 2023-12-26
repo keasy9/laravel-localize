@@ -2,7 +2,7 @@
 
 namespace Keasy9\Localize\Support;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class TranslatableCollection extends Collection
 {
