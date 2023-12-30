@@ -7,22 +7,18 @@
         @else
             <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->previousPageUrl() }}&perPage={{ request('perPage', 25) }}">&lsaquo;</a></li>
             <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->url(1) }}&perPage={{ request('perPage', 25) }}">1</a></li>
-            @if ($paginator->currentPage() !== $paginator->lastPage())
-                @if ($paginator->currentPage() !== 2)
-                    <li>...</li>
-                @endif
-
-                <li>{{ $paginator->currentPage() }}</li>
-            @endif
-        @endif
-
-        @if ($paginator->lastPage() !== 1)
-            @if ($paginator->currentPage() !== $paginator->lastPage() - 1)
+            @if ($paginator->currentPage() > 2 && $paginator->lastPage() > 2)
                 <li>...</li>
             @endif
+            <li>{{ $paginator->currentPage() }}</li>
+        @endif
 
+        @if ($paginator->currentPage() < $paginator->lastPage() - 1)
+            <li>...</li>
+        @endif
+
+        @if ($paginator->currentPage() !== $paginator->lastPage())
             <li class="cursor-pointer text-sky-600"><a href="{{ $paginator->url($paginator->lastPage()) }}&perPage={{ request('perPage', 25) }}">{{ $paginator->lastPage() }}</a></li>
-
         @endif
 
         @if ($paginator->hasMorePages())
