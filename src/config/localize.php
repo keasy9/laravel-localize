@@ -14,9 +14,9 @@ return [
 
     'uri' => 'localize',
 
-    'access' => ['web','auth'],
+    'access' => ['web', 'auth'],
 
     'translated_models' => [
-        Pose::class
+        Pose::class,
     ],
 ];

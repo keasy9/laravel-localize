@@ -5,7 +5,6 @@ namespace Keasy9\Localize\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 use Keasy9\Localize\Models\Translation;
@@ -27,11 +26,11 @@ class LocaleController extends Controller
 
             $sizeUnits = ['b', 'kb', 'mb', 'gb', 'tb'];
             $sizeUnit = 0;
-            while ($size >= 1024 && isset($sizeUnits[$sizeUnit+1])) {
-                $size = round($size/1024, 2);
+            while ($size >= 1024 && isset($sizeUnits[$sizeUnit + 1])) {
+                $size = round($size / 1024, 2);
                 $sizeUnit++;
             }
-            $lang['file']['size'] = "{$size} " . $sizeUnits[$sizeUnit];
+            $lang['file']['size'] = "{$size} ".$sizeUnits[$sizeUnit];
 
             $lang['models'] = [];
 
@@ -44,8 +43,12 @@ class LocaleController extends Controller
                         $translatedFieldsCount = count($model::$translated);
                         $lang['models'][$model] = [
                             'count' => $model::count(),
-                            'fullyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() == $translatedFieldsCount; })->count(),
-                            'partiallyTranslated' => $t->filter(function($translations) use ($translatedFieldsCount) { return $translations->count() < $translatedFieldsCount; })->count(),
+                            'fullyTranslated' => $t->filter(function ($translations) use ($translatedFieldsCount) {
+                                return $translations->count() == $translatedFieldsCount;
+                            })->count(),
+                            'partiallyTranslated' => $t->filter(function ($translations) use ($translatedFieldsCount) {
+                                return $translations->count() < $translatedFieldsCount;
+                            })->count(),
                         ];
 
                     } else {
@@ -69,7 +72,7 @@ class LocaleController extends Controller
 
         return view('localize::locales', [
             'locales' => $locales,
-            'translateDefaultLocale' => config('localize.translate_default_locale')
+            'translateDefaultLocale' => config('localize.translate_default_locale'),
         ]);
     }
 }

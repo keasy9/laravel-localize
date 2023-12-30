@@ -5,8 +5,8 @@ namespace Keasy9\Localize\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -26,7 +26,7 @@ class FileStringController extends Controller
         $perPage = $perPage === 'all' ? $file['content']->count() : $perPage;
 
         if ($request->filled('search')) {
-            $file['content'] = $file['content']->filter(function(string $key, string $value) use ($request) {
+            $file['content'] = $file['content']->filter(function (string $key, string $value) use ($request) {
                 return str_contains($key, $request->get('search')) || str_contains($value, $request->get('search'));
             });
         }
@@ -50,7 +50,7 @@ class FileStringController extends Controller
 
         return redirect()->back()->with(
             'saved',
-            (bool)File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
+            (bool) File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
         );
     }
 
@@ -62,7 +62,7 @@ class FileStringController extends Controller
 
         return redirect()->back()->with(
             'deleted',
-            (bool)File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
+            (bool) File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
         );
     }
 
@@ -84,6 +84,7 @@ class FileStringController extends Controller
             } catch (\Exception $e) {
                 return false;
             }
+
             return true;
         });
 
@@ -93,13 +94,14 @@ class FileStringController extends Controller
 
         return redirect()->back()->with(
             'filled',
-            (bool)File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
+            (bool) File::put($filename, json_encode($fileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
         );
     }
 
     public function export(Request $request, string $locale): BinaryFileResponse
     {
         $filename = "{$locale}.json";
+
         return response()->download(lang_path($filename), $filename, ['Content-Type: application/json']);
     }
 
@@ -108,7 +110,7 @@ class FileStringController extends Controller
         json_decode(file_get_contents($request->file('file')));
         $isValid = json_last_error() === JSON_ERROR_NONE;
 
-        if (!$isValid) {
+        if (! $isValid) {
             return redirect()->back()->with('imported', $isValid);
         }
 

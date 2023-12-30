@@ -52,18 +52,20 @@ class TranslationController extends Controller
         DB::beginTransaction();
         foreach ($model::$translated as $attribute) {
             if ($request->filled($attribute)) {
-                $result = (bool)Translation::updateOrCreate(
-                   ['model_type' => $model, 'model_id' => $id, 'model_field' => $attribute, 'locale' => $locale],
-                   ['translation' => $request->input($attribute)],
+                $result = (bool) Translation::updateOrCreate(
+                    ['model_type' => $model, 'model_id' => $id, 'model_field' => $attribute, 'locale' => $locale],
+                    ['translation' => $request->input($attribute)],
                 );
-                if (!$result) {
+                if (! $result) {
                     DB::rollBack();
+
                     return redirect()->back()->with('saved', $result);
                 }
             }
         }
 
         DB::commit();
+
         return redirect()->back()->with('saved', $result);
     }
 }

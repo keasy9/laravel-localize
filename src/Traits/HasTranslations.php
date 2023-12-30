@@ -13,6 +13,7 @@ trait HasTranslations
         if (self::$preventAutoTranslation ?? false) {
             return $this->getAttribute($key);
         }
+
         return $this->getTranslatedAttribute($key);
     }
 
@@ -26,11 +27,11 @@ trait HasTranslations
         $locale ??= app()->getLocale();
 
         if (
-            !($locale === config('localize.default_locale', '') && !config('localize.translate_default_locale', true))
+            ! ($locale === config('localize.default_locale', '') && ! config('localize.translate_default_locale', true))
             && in_array($attribute, array_keys($this->attributes))
         ) {
-            if (!$this->relationLoaded('translations')) {
-                $this->load(['translations' => function($query) use ($locale) {
+            if (! $this->relationLoaded('translations')) {
+                $this->load(['translations' => function ($query) use ($locale) {
                     $query->where('locale', '=', $locale);
                 }]);
             }
@@ -45,10 +46,10 @@ trait HasTranslations
         return $this->getAttribute($attribute);
     }
 
-    public function translate(string $locale = null): self
+    public function translate(?string $locale = null): self
     {
         foreach (self::$translated as $translated) {
-           $this->$translated = $this->getTranslatedAttribute($translated, $locale);
+            $this->$translated = $this->getTranslatedAttribute($translated, $locale);
         }
 
         return $this;
