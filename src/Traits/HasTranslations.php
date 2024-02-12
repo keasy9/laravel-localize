@@ -2,6 +2,7 @@
 
 namespace Keasy9\Localize\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Keasy9\Localize\Models\Translation;
 use Keasy9\Localize\Support\TranslatableCollection;
@@ -53,6 +54,21 @@ trait HasTranslations
         }
 
         return $this;
+    }
+
+    public function scopeTranslated(Builder $query, ?string $locale = null): Builder
+    {
+        $locale ??= app()->getLocale();
+        if ($locale !== config('localize.default_locale', '')) {
+            foreach (self::$translated as $translated) {
+                $query->selectRaw(
+                    'COALESCE((select `translation` from `translations` t where t.`model_id` = `'.app(self::class)->getTable()."`.`id` and t.`model_type` = ? and t.`model_field` = ? and `locale` = ?), {$translated}) as {$translated}",
+                    [get_class($this), $translated, $locale]
+                );
+            }
+        }
+
+        return $query;
     }
 
     public function newCollection(array $models = []): TranslatableCollection
