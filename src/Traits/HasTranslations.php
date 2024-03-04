@@ -60,6 +60,7 @@ trait HasTranslations
     {
         $locale ??= app()->getLocale();
         if ($locale !== config('localize.default_locale', '')) {
+            $query->addSelect('*');
             foreach (self::$translated as $translated) {
                 $query->selectRaw(
                     'COALESCE((select `translation` from `translations` t where t.`model_id` = `'.app(self::class)->getTable()."`.`id` and t.`model_type` = ? and t.`model_field` = ? and `locale` = ?), {$translated}) as {$translated}",
