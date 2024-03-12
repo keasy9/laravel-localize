@@ -25,6 +25,11 @@ trait HasTranslations
 
     public function getTranslatedAttribute(string $attribute, ?string $locale = null): mixed
     {
+        return $this->getAttributeIfTranslated($attribute, $locale) ?? $this->getAttribute($attribute);
+    }
+
+    public function getAttributeIfTranslated(string $attribute, ?string $locale = null): mixed
+    {
         $locale ??= app()->getLocale();
 
         if (
@@ -42,6 +47,7 @@ trait HasTranslations
                     return $translation->translation;
                 }
             }
+            return null;
         }
 
         return $this->getAttribute($attribute);
